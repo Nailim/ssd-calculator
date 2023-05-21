@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Seven-Segment Display</title>
+  <style>
+    .seven-segment-tool {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-gap: 20px;
+      width: 600px;
+      margin: auto;
+    }
+    .seven-segment-options {
+      margin: auto;
+    }
+
+    .seven-segment-display {
+      width: 180px;
+      height: 300px;
+      background-color: black;
+      position: relative;
+      margin: auto;
+    }
+
+    .segment {
+      position: absolute;
+      background-color: red;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: bold;
+      color: white;
+      text-transform: uppercase;
+    }
+
+    .A {
+      top: 20px;
+      left: 50px;
+      width: 80px;
+      height: 15px;
+    }
+
+    .B {
+      top: 55px;
+      right: 20px;
+      width: 15px;
+      height: 80px;
+    }
+
+    .C {
+      top: 180px;
+      right: 20px;
+      width: 15px;
+      height: 80px;
+    }
+
+    .D {
+      bottom: 20px;
+      left: 50px;
+      width: 80px;
+      height: 15px;
+    }
+
+    .E {
+      top: 180px;
+      left: 20px;
+      width: 15px;
+      height: 80px;
+    }
+
+    .F {
+      top: 55px;
+      left: 20px;
+      width: 15px;
+      height: 80px;
+    }
+
+    .G {
+      top: 150px;
+      left: 50px;
+      width: 80px;
+      height: 15px;
+    }
+
+    .DP {
+      bottom: 20px;
+      right: 0px;
+      width: 15px;
+      height: 15px;
+      font-size: 8px;
+    }
+
+    .segment-info {
+      margin-top: 10px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="seven-segment-tool">
+    <div class="seven-segment-display">
+      <div class="segment A" data-segment="A">A</div>
+      <div class="segment B" data-segment="B">B</div>
+      <div class="segment C" data-segment="C">C</div>
+      <div class="segment D" data-segment="D">D</div>
+      <div class="segment E" data-segment="E">E</div>
+      <div class="segment F" data-segment="F">F</div>
+      <div class="segment G" data-segment="G">G</div>
+      <div class="segment DP" data-segment="DP">DP</div>
+    </div>
+
+    <div class="seven-segment-options">
+      <div class="segment-info">
+        Calculated Value: <span id="byte-value">0xFF</span>
+      </div>
+
+      <div class="segment-values">
+      <table id="segment-values">
+        <thead>
+          <tr>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>A</td>
+            <td><input type="text" id="A" value="0x01"></td>
+          </tr>
+          <tr>
+            <td>B</td>
+            <td><input type="text" id="B" value="0x02"></td>
+          </tr>
+          <tr>
+            <td>C</td>
+            <td><input type="text" id="C" value="0x04"></td>
+          </tr>
+          <tr>
+            <td>D</td>
+            <td><input type="text" id="D" value="0x08"></td>
+          </tr>
+          <tr>
+            <td>E</td>
+            <td><input type="text" id="E" value="0x10"></td>
+          </tr>
+          <tr>
+            <td>F</td>
+            <td><input type="text" id="F" value="0x20"></td>
+          </tr>
+          <tr>
+            <td>G</td>
+            <td><input type="text" id="G" value="0x40"></td>
+          </tr>
+          <tr>
+            <td>DP</td>
+            <td><input type="text" id="DP" value="0x80"></td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </div>
+  <script>
+    // get all segment elements
+    const segments = document.querySelectorAll('.segment');
+
+    // get the byte-value element
+    const byteValue = document.getElementById('byte-value');
+
+    // add click event listener to each segment
+    segments.forEach(segment => {
+      segment.addEventListener('click', () => {
+        const segmentName = segment.getAttribute('data-segment');
+        
+        const currentColor = window.getComputedStyle(segment).backgroundColor;
+        const newColor = currentColor === 'rgb(255, 0, 0)' ? 'rgb(0, 0, 0)' : 'rgb(255, 0, 0)';
+        segment.style.backgroundColor = newColor;
+ 
+        var gnum = Number(byteValue.textContent);
+        if(currentColor === 'rgb(255, 0, 0)'){
+          // if it's red it's on
+          gnum = gnum - Number(document.getElementById(segmentName).value);
+        } else {
+          gnum = gnum + Number(document.getElementById(segmentName).value);
+        }
+
+        byteValue.textContent = "0x" + gnum.toString(16).toUpperCase();
+      });
+    });
+  </script>
+</body>
+</html>
