@@ -8,4 +8,4 @@ Open in browser, it uses JS. Click on the segments to set state, copy the calcul
 
 ## is it any good
 
-No. It was done fast and in JS.
+No. It was done blazingly fast in JS.
